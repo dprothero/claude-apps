@@ -192,7 +192,7 @@ export default function App() {
                     <table className="text-sm">
                       <thead>
                         <tr className="bg-emerald-950/50 text-left text-[11px] uppercase tracking-wide text-emerald-200/70">
-                          <th className="px-4 py-2 font-semibold">Color</th>
+                          <th className="px-4 py-2 font-semibold">Player</th>
                           <th className="px-4 py-2 font-semibold">Letter</th>
                           <th className="px-4 py-2 text-right font-semibold">Count</th>
                         </tr>
@@ -206,7 +206,7 @@ export default function App() {
                             <td className="px-4 py-1.5">
                               <span className="flex items-center gap-2">
                                 <Swatch player={player} />
-                                {PLAYER_STYLES[player]?.name} (Player {player + 1})
+                                Player {player + 1}
                               </span>
                             </td>
                             <td className="px-4 py-1.5 font-mono font-semibold">{letter}</td>

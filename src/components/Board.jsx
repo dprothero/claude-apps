@@ -27,13 +27,7 @@ export default function Board({ layout }) {
         {grid.map((row, r) =>
           row.map((cell, c) =>
             cell ? (
-              <Tile
-                key={`${r}-${c}`}
-                letter={cell.letter}
-                crossing={cell.count > 1}
-                disconnected={cell.disconnected}
-                size={size}
-              />
+              <Tile key={`${r}-${c}`} letter={cell.letter} player={cell.player} size={size} />
             ) : (
               <div
                 key={`${r}-${c}`}

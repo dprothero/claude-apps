@@ -1,6 +1,37 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { solve, normalizeWords } from './solver.js'
 import Board from './components/Board.jsx'
+import { PLAYER_STYLES } from './components/Tile.jsx'
+
+// A small coloured square used in the legend and the inventory table.
+function Swatch({ player }) {
+  const style = PLAYER_STYLES[player] ?? PLAYER_STYLES[0]
+  return (
+    <span
+      className="inline-block h-3.5 w-3.5 rounded-sm border align-middle"
+      style={{ backgroundColor: style.bg, borderColor: style.border }}
+    />
+  )
+}
+
+// Tally every tile on the board by player colour and letter.
+function buildInventory(layout) {
+  if (!layout || !layout.grid) return []
+  const counts = new Map()
+  for (const row of layout.grid) {
+    for (const cell of row) {
+      if (!cell) continue
+      const key = `${cell.player}|${cell.letter}`
+      counts.set(key, (counts.get(key) ?? 0) + 1)
+    }
+  }
+  return [...counts.entries()]
+    .map(([key, count]) => {
+      const [player, letter] = key.split('|')
+      return { player: Number(player), letter, count }
+    })
+    .sort((a, b) => a.player - b.player || a.letter.localeCompare(b.letter))
+}
 
 const EXAMPLE = 'scrabble\nword\nboard\ntile\nplay\ngame\nletter\nbonus'
 
@@ -19,6 +50,7 @@ export default function App() {
   const [solving, setSolving] = useState(false)
 
   const preview = normalizeWords(text)
+  const inventory = useMemo(() => buildInventory(layout), [layout])
 
   function handleSolve() {
     setSolving(true)
@@ -81,17 +113,15 @@ export default function App() {
               {solving ? 'Solving…' : 'Solve'}
             </button>
 
-            <div className="flex flex-wrap gap-3 pt-2 text-xs text-emerald-200/70">
+            <div className="flex flex-wrap gap-4 pt-2 text-xs text-emerald-200/70">
               <span className="flex items-center gap-1.5">
-                <span className="inline-block h-3 w-3 rounded-sm bg-[#f4e4bc]" /> tile
+                <Swatch player={0} /> Player 1 tiles
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="inline-block h-3 w-3 rounded-sm bg-yellow-200 ring-1 ring-yellow-400" />{' '}
-                crossing
+                <Swatch player={1} /> Player 2 tiles
               </span>
-              <span className="flex items-center gap-1.5">
-                <span className="inline-block h-3 w-3 rounded-sm bg-amber-100 ring-1 ring-amber-300" />{' '}
-                unlinked word
+              <span className="basis-full text-emerald-200/50">
+                Tiles alternate colour by word, as if players took turns.
               </span>
             </div>
           </div>
@@ -118,6 +148,40 @@ export default function App() {
 
                 <div className="overflow-auto pb-2">
                   <Board layout={layout} />
+                </div>
+
+                <div>
+                  <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-emerald-100">
+                    Tile inventory
+                  </h2>
+                  <div className="inline-block overflow-hidden rounded-lg ring-1 ring-emerald-300/15">
+                    <table className="text-sm">
+                      <thead>
+                        <tr className="bg-emerald-950/50 text-left text-[11px] uppercase tracking-wide text-emerald-200/70">
+                          <th className="px-4 py-2 font-semibold">Color</th>
+                          <th className="px-4 py-2 font-semibold">Letter</th>
+                          <th className="px-4 py-2 text-right font-semibold">Count</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {inventory.map(({ player, letter, count }) => (
+                          <tr
+                            key={`${player}-${letter}`}
+                            className="border-t border-emerald-300/10 odd:bg-emerald-950/20"
+                          >
+                            <td className="px-4 py-1.5">
+                              <span className="flex items-center gap-2">
+                                <Swatch player={player} />
+                                {PLAYER_STYLES[player]?.name} (Player {player + 1})
+                              </span>
+                            </td>
+                            <td className="px-4 py-1.5 font-mono font-semibold">{letter}</td>
+                            <td className="px-4 py-1.5 text-right tabular-nums">{count}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             ) : (

@@ -252,9 +252,13 @@ function finalizeLayout(placements) {
         cell.count += 1
         cell.words.push(index)
         // A shared cell only counts as disconnected if every word on it is.
+        // The tile keeps the colour of whoever placed it first (cell.player),
+        // so we never overwrite it on a crossing.
         cell.disconnected = cell.disconnected && disconnected
       } else {
-        grid[r][c] = { letter: word[i], count: 1, words: [index], disconnected }
+        // Words are placed in turn order, so alternating the index gives each
+        // word the tile colour of the "player" who laid it (0 or 1).
+        grid[r][c] = { letter: word[i], count: 1, words: [index], player: index % 2, disconnected }
       }
     }
   }

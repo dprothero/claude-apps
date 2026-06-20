@@ -84,7 +84,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-full text-emerald-50">
+    <>
+    <div className="app-screen min-h-full text-emerald-50">
       <div className="mx-auto max-w-6xl px-4 py-8">
         <header className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
@@ -179,7 +180,7 @@ export default function App() {
                 </div>
 
                 <div className="overflow-auto pb-2">
-                  <div className="print-board inline-block">
+                  <div className="inline-block">
                     <Board layout={layout} />
                   </div>
                 </div>
@@ -235,5 +236,14 @@ export default function App() {
         </footer>
       </div>
     </div>
+
+      {/* Print-only copy of the board: rendered alone so printing yields a
+          single page with no leftover layout height. */}
+      {layout && layout.stats && (
+        <div className="print-board">
+          <Board layout={layout} />
+        </div>
+      )}
+    </>
   )
 }

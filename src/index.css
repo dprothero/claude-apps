@@ -14,7 +14,14 @@ body {
   background-image: radial-gradient(circle at top, #115e59, #042f2e 70%);
 }
 
-/* Printing: show only the rendered board on a clean white page. */
+/* The print-only board is hidden on screen and revealed only when printing. */
+.print-board {
+  display: none;
+}
+
+/* Printing: show only the rendered board on a clean white page. Hiding the
+   whole screen app with display:none (rather than visibility:hidden) means it
+   takes up no height, so the printout is a single page. */
 @media print {
   @page {
     margin: 12mm;
@@ -24,20 +31,12 @@ body {
     background: #fff !important;
   }
 
-  /* Hide everything, then reveal just the board. */
-  body * {
-    visibility: hidden;
-  }
-
-  .print-board,
-  .print-board * {
-    visibility: visible;
+  .app-screen {
+    display: none !important;
   }
 
   .print-board {
-    position: absolute;
-    left: 0;
-    top: 0;
+    display: inline-block;
   }
 
   /* Force tile colors to actually print. */

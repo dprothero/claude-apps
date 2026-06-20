@@ -146,8 +146,20 @@ export default function App() {
                   </p>
                 )}
 
+                <div className="flex justify-end no-print">
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="rounded-lg bg-emerald-800/70 px-3 py-1.5 text-sm font-semibold text-emerald-50 ring-1 ring-emerald-300/30 transition hover:bg-emerald-700"
+                  >
+                    Print board
+                  </button>
+                </div>
+
                 <div className="overflow-auto pb-2">
-                  <Board layout={layout} />
+                  <div className="print-board inline-block">
+                    <Board layout={layout} />
+                  </div>
                 </div>
 
                 <div>

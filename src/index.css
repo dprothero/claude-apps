@@ -13,3 +13,50 @@ body {
   background-color: #0f766e;
   background-image: radial-gradient(circle at top, #115e59, #042f2e 70%);
 }
+
+/* Printing: show only the rendered board on a clean white page. */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  /* Hide everything, then reveal just the board. */
+  body * {
+    visibility: hidden;
+  }
+
+  .print-board,
+  .print-board * {
+    visibility: visible;
+  }
+
+  .print-board {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* Force tile colors to actually print. */
+  .print-board,
+  .print-board * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Clean, ink-friendly board frame and empty cells. */
+  .print-board .board-frame {
+    background: #fff !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    --tw-ring-color: transparent !important;
+  }
+
+  .print-board .board-empty {
+    background: #fff !important;
+    box-shadow: inset 0 0 0 1px #e5e7eb !important;
+  }
+}

@@ -15,7 +15,7 @@ export default function Board({ layout }) {
   const gap = Math.max(2, Math.round(size * 0.08))
 
   return (
-    <div className="inline-block rounded-lg bg-emerald-950/40 p-3 ring-1 ring-emerald-300/20">
+    <div className="board-frame inline-block rounded-lg bg-emerald-950/40 p-3 ring-1 ring-emerald-300/20">
       <div
         className="grid"
         style={{
@@ -31,7 +31,7 @@ export default function Board({ layout }) {
             ) : (
               <div
                 key={`${r}-${c}`}
-                className="rounded-[3px] bg-emerald-900/30 ring-1 ring-inset ring-emerald-300/5"
+                className="board-empty rounded-[3px] bg-emerald-900/30 ring-1 ring-inset ring-emerald-300/5"
                 style={{ width: size, height: size }}
               />
             ),

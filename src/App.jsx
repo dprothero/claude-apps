@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { solve, normalizeWords } from './solver.js'
 import Board from './components/Board.jsx'
 import { PLAYER_STYLES } from './components/Tile.jsx'
@@ -44,10 +44,32 @@ function Stat({ label, value }) {
   )
 }
 
+const STORAGE_KEY = 'scrabble-solver:words'
+
+// Load the saved word list, falling back to the example on first visit or if
+// storage is unavailable (e.g. private mode).
+function loadSavedWords() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    return saved !== null ? saved : EXAMPLE
+  } catch {
+    return EXAMPLE
+  }
+}
+
 export default function App() {
-  const [text, setText] = useState(EXAMPLE)
+  const [text, setText] = useState(loadSavedWords)
   const [layout, setLayout] = useState(null)
   const [solving, setSolving] = useState(false)
+
+  // Persist the word list so it auto-restores on the next visit.
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, text)
+    } catch {
+      // Ignore storage failures (private mode, quota, etc.).
+    }
+  }, [text])
 
   const preview = normalizeWords(text)
   const inventory = useMemo(() => buildInventory(layout), [layout])

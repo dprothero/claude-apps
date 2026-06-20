@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        tile: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
+        // Clean bold sans-serif to match printed Scrabble letter tiles.
+        tile: ['"Helvetica Neue"', 'Arial', 'Liberation Sans', 'system-ui', 'sans-serif'],
       },
     },
   },

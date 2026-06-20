@@ -30,7 +30,7 @@ function buildInventory(layout) {
       const [player, letter] = key.split('|')
       return { player: Number(player), letter, count }
     })
-    .sort((a, b) => a.player - b.player || a.letter.localeCompare(b.letter))
+    .sort((a, b) => a.letter.localeCompare(b.letter) || a.player - b.player)
 }
 
 const EXAMPLE = 'scrabble\nword\nboard\ntile\nplay\ngame\nletter\nbonus'

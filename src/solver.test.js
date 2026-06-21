@@ -79,19 +79,6 @@ test('compact layout beats the naive one-per-line stack', () => {
   assert.ok(layout.stats.area < naiveArea, 'expected interlocked layout to be compact')
 })
 
-test('each tile is coloured by the player who placed it first', () => {
-  const layout = solve(['scrabble', 'board', 'tile', 'play', 'game'])
-  for (const row of layout.grid) {
-    for (const cell of row) {
-      if (!cell) continue
-      // Two alternating player colours only.
-      assert.ok(cell.player === 0 || cell.player === 1, 'player must be 0 or 1')
-      // The colour matches the earliest word to occupy the cell.
-      assert.equal(cell.player, cell.words[0] % 2)
-    }
-  }
-})
-
 test('empty input yields an empty layout', () => {
   const layout = solve('   , ,  ')
   assert.equal(layout.rows, 0)

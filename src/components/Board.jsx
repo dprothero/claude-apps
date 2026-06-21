@@ -27,7 +27,7 @@ export default function Board({ layout }) {
         {grid.map((row, r) =>
           row.map((cell, c) =>
             cell ? (
-              <Tile key={`${r}-${c}`} letter={cell.letter} player={cell.player} size={size} />
+              <Tile key={`${r}-${c}`} letter={cell.letter} size={size} />
             ) : (
               <div
                 key={`${r}-${c}`}
